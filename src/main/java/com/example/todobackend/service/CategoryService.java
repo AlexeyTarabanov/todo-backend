@@ -3,7 +3,6 @@ package com.example.todobackend.service;
 import com.example.todobackend.entity.Category;
 import com.example.todobackend.repo.CategoryRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,5 +24,13 @@ public class CategoryService {
     // поиск категории по ID
     public Category findById(Long id) {
         return repository.findById(id).get();
+    }
+
+    public List<Category> findAll(String email) {
+        return repository.findByUserEmailOrderByTitleAsc(email);
+    }
+
+    public Category add(Category category) {
+        return repository.save(category);
     }
 }
