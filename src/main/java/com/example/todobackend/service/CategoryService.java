@@ -33,4 +33,8 @@ public class CategoryService {
     public Category add(Category category) {
         return repository.save(category);
     }
+
+    public Category update(Category category) {
+        return repository.save(category);
+    }
 }

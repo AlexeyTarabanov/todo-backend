@@ -49,6 +49,24 @@ public class CategoryController {
             return new ResponseEntity("missed param: title", HttpStatus.NOT_ACCEPTABLE);
         }
 
+        // возвращаем добавленный объект с заполненным ID
         return ResponseEntity.ok(categoryService.add(category));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity update(@RequestBody Category category) {
+        if (category.getId() == null || category.getId() == 0) {
+            return new ResponseEntity("missed param: id", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        // если передали пустое значение title
+        if (category.getTitle() == null || category.getTitle().trim().length() == 0) {
+            return new ResponseEntity("missed param: title", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        // save работает как на добавление, так и на обновление
+        categoryService.update(category);
+
+        return new ResponseEntity(HttpStatus.OK); // просто отправляем статус 200 (операция прошла успешно)
     }
 }
