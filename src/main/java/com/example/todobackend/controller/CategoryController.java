@@ -2,6 +2,7 @@ package com.example.todobackend.controller;
 
 import com.example.todobackend.entity.Category;
 import com.example.todobackend.service.CategoryService;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -69,4 +70,23 @@ public class CategoryController {
 
         return new ResponseEntity(HttpStatus.OK); // просто отправляем статус 200 (операция прошла успешно)
     }
+
+    // для удаления используем тип запроса DELETE и передаем ID для удаления
+    // можно также использовать метод POST и передавать ID в теле запроса
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity delete(@PathVariable("id") Long id) {
+
+        // можно обойтись и без try-catch, тогда будет возвращаться полная ошибка (stacktrace)
+        // здесь показан пример, как можно обрабатывать исключение и отправлять свой текст/статус
+        try {
+            categoryService.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            e.printStackTrace();
+            return new ResponseEntity("id=" + id + " not found", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        // просто отправляем статус 200 без объектов (операция прошла успешно)
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }
