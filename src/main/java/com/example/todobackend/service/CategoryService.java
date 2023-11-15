@@ -41,4 +41,9 @@ public class CategoryService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
+    // поиск категорий пользователя по названию
+    public List<Category> findByTitle(String text, String email) {
+        return repository.findByTitle(text, email);
+    }
 }

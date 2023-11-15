@@ -1,5 +1,6 @@
 package com.example.todobackend.controller;
 
+import com.example.todobackend.controller.search.CategorySearchValues;
 import com.example.todobackend.entity.Category;
 import com.example.todobackend.service.CategoryService;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -87,6 +88,21 @@ public class CategoryController {
 
         // просто отправляем статус 200 без объектов (операция прошла успешно)
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    // поиск по любым параметрам CategorySearchValues
+    @PostMapping("/search")
+    public ResponseEntity<List<Category>> search(@RequestBody CategorySearchValues categorySearchValues) {
+
+        // проверка на обязательные параметры
+        if (categorySearchValues.getEmail() == null || categorySearchValues.getEmail().trim().length() == 0) {
+            return new ResponseEntity("missed param: email", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        // поиск категорий пользователя по названию
+        List<Category> list = categoryService.findByTitle(categorySearchValues.getTitle(), categorySearchValues.getEmail());
+
+        return ResponseEntity.ok(list);
     }
 
 }
