@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Используем @RestController вместо обычного @Controller, чтобы все ответы сразу оборачивались в JSON,
@@ -103,6 +104,21 @@ public class CategoryController {
         List<Category> list = categoryService.findByTitle(categorySearchValues.getTitle(), categorySearchValues.getEmail());
 
         return ResponseEntity.ok(list);
+    }
+
+    @PostMapping("/id")
+    public ResponseEntity<Category> findById(@RequestBody Long id) {
+
+        Category category;
+
+        try {
+            category = categoryService.findById(id);
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return new ResponseEntity("id=" + id + " not found", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return ResponseEntity.ok(category);
     }
 
 }
