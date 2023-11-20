@@ -2,24 +2,13 @@ package com.example.todobackend.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Cacheable;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.JoinColumn;
 import java.util.Objects;
 
 /**
@@ -46,9 +35,7 @@ public class Stat { // в этой таблице всего 1 запись, к�
     @Column(name = "uncompleted_total", updatable = false)
     private Long uncompletedTotal; // значение задается в триггере в БД
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @MapsId
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id") // по каким полям связывать (foreign key)
     private User user;
 
